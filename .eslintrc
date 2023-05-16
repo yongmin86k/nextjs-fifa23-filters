@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "next",
+    "prettier",
+    "airbnb-base",
+    "airbnb-typescript/base"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "prettier/prettier": "off",
+    "import/namespace": "off",
+    "import/prefer-default-export": "off",
+    "indent": [
+      "error",
+      2
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "@typescript-eslint/semi": [
+      "error",
+      "never"
+    ],
+    "no-tabs": "off",
+  }
+}
