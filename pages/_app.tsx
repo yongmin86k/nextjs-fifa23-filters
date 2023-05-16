@@ -16,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
         {`
           html { 
 						font-family: ${roboto.style.fontFamily};
+            font-size: 16px;
 						color: ${COLOR.black};
 					}
           body { 

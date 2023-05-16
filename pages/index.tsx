@@ -1,12 +1,23 @@
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
+import styled from 'styled-components'
 import Layout, { siteTitle } from '../components/layout'
 import { IPlayer, getAllPlayers } from '../lib/players'
+import { CheckBox } from '../components/CheckBox'
+import { Button } from '../components/Button'
+import { PlayerTable } from '../components/PlayerTable'
+
+const StyledBody = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 4em 6em;
+`
 
 export default function Home({
   allPlayersData,
 }: {
-  allPlayersData: IPlayer[];
+  allPlayersData: IPlayer[]
 }) {
   return (
     <Layout>
@@ -14,27 +25,17 @@ export default function Home({
         <title>{siteTitle}</title>
       </Head>
 
-      <section style={{ padding: 20 }}>
-        {/* <h2>Players : {allPlayersData.length}</h2> */}
+      <StyledBody>
+        {/* FILTERS */}
+        <Button size='small'>
+          <CheckBox />
 
-        <table border={1}>
-          <thead>
-            <tr>
-              <th>id</th>
-              <th>name</th>
-            </tr>
-          </thead>
+          <span style={{ marginLeft: 12 }}>Loan</span>
+        </Button>
 
-          <tbody>
-            {allPlayersData.map(({ id, playerName }) => (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{playerName}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+        {/* TABLE */}
+        <PlayerTable players={allPlayersData}/>
+      </StyledBody>
     </Layout>
   )
 }

@@ -25,5 +25,7 @@
       "never"
     ],
     "no-tabs": "off",
+    "no-nested-ternary": "off",
+    "max-len": "off"
   }
 }
