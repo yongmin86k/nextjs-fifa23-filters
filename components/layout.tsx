@@ -1,10 +1,7 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
+import StyledComponentsRegistry from '../lib/common/registry'
 
-const name = '[Your Name]'
 export const siteTitle = 'Next.js Sample Website'
 
 export default function Layout({
@@ -15,7 +12,7 @@ export default function Layout({
   home?: boolean
 }) {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -65,13 +62,19 @@ export default function Layout({
         )}
       </header> */}
 
-      <main>{children}</main>
+      <main>
+        <StyledComponentsRegistry>
+          {children}
+        </StyledComponentsRegistry>
+      </main>
 
-      {!home && (
-        <div className={styles.backToHome}>
+
+
+      {/* {!home && (
+        <div>
           <Link href="/">← Back to home</Link>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
