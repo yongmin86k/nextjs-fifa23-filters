@@ -1,59 +1,50 @@
 import Head from 'next/head'
-import { isNumber } from 'lodash'
-import Layout, { siteTitle } from '../components/layout'
 import { GetStaticProps } from 'next'
+import Layout, { siteTitle } from '../components/layout'
 import { IPlayer, getAllPlayers } from '../lib/players'
 
 export default function Home({
-  allPlayersData
+  allPlayersData,
 }: {
-  allPlayersData: IPlayer[]
+  allPlayersData: IPlayer[];
 }) {
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{siteTitle}</title>
       </Head>
 
-      <section>
-        <h2>Players : {allPlayersData.length}</h2>
+      <section style={{ padding: 20 }}>
+        {/* <h2>Players : {allPlayersData.length}</h2> */}
 
         <table border={1}>
-          <tr>
-            <th>No.</th>
-            {/* <th>ID</th> */}
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Is loan</th>
-            <th>rarityName</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>name</th>
+            </tr>
+          </thead>
 
-          {
-            allPlayersData.map(({ id, playerName, rating, loans, rarityName }, index) => {
-              return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  {/* <td>{id}</td> */}
-                  <td>{playerName}</td>
-                  <td>{rating}</td>
-                  <td>{isNumber(loans) ? loans : '-'}</td>
-                  <td>{rarityName || '- -'}</td>
-                </tr>
-              )
-            })
-          }
+          <tbody>
+            {allPlayersData.map(({ id, playerName }) => (
+              <tr key={id}>
+                <td>{id}</td>
+                <td>{playerName}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </section>
     </Layout>
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = () => {
   const allPlayersData = getAllPlayers()
 
   return {
     props: {
       allPlayersData,
-    }
+    },
   }
 }

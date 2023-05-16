@@ -1,48 +1,49 @@
 import { orderBy, isNumber } from 'lodash'
-import clubFiles from "./data/clubFiles"
+import clubFiles from './data/clubFiles'
+
 const players = require('./data/players.json')
 const local = require('./data/en-US.json')
 
 interface IRawPlayer {
-  f: string
-  id: number
-  l: string
-  r: number
-  c?: string
+  f: string;
+  id: number;
+  l: string;
+  r: number;
+  c?: string;
 }
 
 interface ILeague {
-  name: string | null
-  abbr5: string | null
-  abbr15: string | null
+  name: string | null;
+  abbr5: string | null;
+  abbr15: string | null;
 }
 
 interface ITeam {
-  abbr3: string | null
-  abbr10: string | null
-  abbr15: string | null
-  club: string | null
+  abbr3: string | null;
+  abbr10: string | null;
+  abbr15: string | null;
+  club: string | null;
 }
 
 interface INationality {
-  abbr: string | null
-  abbr12: string | null
-  name: string | null
+  abbr: string | null;
+  abbr12: string | null;
+  name: string | null;
 }
 
 export interface IPlayer {
-  id: number
-  playerName: string
-  rating: number
-  loans: number | null
-  rarityName: string | null
-  league: ILeague
-  team: ITeam
-  nationality: INationality
+  id: number;
+  playerName: string;
+  rating: number;
+  loans: number | null;
+  rarityName: string | null;
+  league: ILeague;
+  team: ITeam;
+  nationality: INationality;
 }
 
 const getLeague = (leagueId: number): ILeague => {
-  const prefix = `global.league`
+  const prefix = 'global.league'
   const suffix = `.2023.league${leagueId}`
 
   const name = `${prefix}Full${suffix}`
@@ -56,13 +57,15 @@ const getLeague = (leagueId: number): ILeague => {
   }
 }
 
-const getTeam = (teamId: number): {
-  abbr3: string | null
-  abbr10: string | null
-  abbr15: string | null
-  club: string | null
+const getTeam = (
+  teamId: number,
+): {
+  abbr3: string | null;
+  abbr10: string | null;
+  abbr15: string | null;
+  club: string | null;
 } => {
-  const prefix = `global.teamabbr`
+  const prefix = 'global.teamabbr'
   const suffix = `.2023.team${teamId}`
 
   const abbr3 = `${prefix}3${suffix}`
@@ -79,10 +82,12 @@ const getTeam = (teamId: number): {
   }
 }
 
-const getNationality = (nationId: number): {
-  abbr: string | null
-  abbr12: string | null
-  name: string | null
+const getNationality = (
+  nationId: number,
+): {
+  abbr: string | null;
+  abbr12: string | null;
+  name: string | null;
 } => {
   const abbr = `nationAbbrvByID_${nationId}`
   const abbr12 = `search.nationAbbr12.nation${nationId}`
@@ -101,8 +106,15 @@ const getRarityName = (rareFlag: number): string | null => {
   return local[key]
 }
 
-export const getAllPlayers = () => {
-  const allPlayers: IRawPlayer[] = [...players.LegendsPlayers, ...players.Players]
+export const getAllPlayers = (
+  filters: {
+    isLoan?: boolean;
+  } = undefined,
+) => {
+  const allPlayers: IRawPlayer[] = [
+    ...players.LegendsPlayers,
+    ...players.Players,
+  ]
   const mappedPlayerById = new Map<number, IRawPlayer>()
 
   allPlayers.forEach((player) => {
@@ -147,7 +159,9 @@ export const getAllPlayers = () => {
     }
   })
 
-  const filtered = mapped.filter((item) => !isNumber(item.loans) && (item.rating >= 80 && item.rating <= 82))
+  const filtered = mapped.filter(
+    (item) => !isNumber(item.loans) && item.rating >= 80 && item.rating <= 82,
+  )
   const sorted = orderBy(filtered, ['rating', 'playernName'], ['desc', 'asc'])
 
   return sorted as IPlayer[]
