@@ -1,8 +1,9 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import StyledComponentsRegistry from '../lib/common/registry'
 
 export const siteTitle = 'Next.js Sample Website'
+
+
 
 export default function Layout({
   children,
@@ -28,6 +29,7 @@ export default function Layout({
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
+
       {/* <header className={styles.header}>
         {home ? (
           <>
