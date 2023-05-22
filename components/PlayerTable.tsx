@@ -1,40 +1,61 @@
-import styled from 'styled-components'
+import { Dispatch, SetStateAction } from 'react'
 import { IPlayer } from '../lib/players'
-import COLOR from '../lib/colors'
+import { SearchFilter } from '../lib/searchFilters/SearchFilter'
+import { StyledTable } from './styled_components/StyledTable'
 
 interface Props {
-  players: IPlayer[]
+  searchFilter: SearchFilter
+  orderClicked: boolean
+  setOrderClicked: Dispatch<SetStateAction<boolean>>
 }
 
-const Table = styled.table`
-  margin-top: 16px;
-  border: 1px solid ${COLOR.black};
-  border-collapse: separate;
-  border-spacing: 12px;
-  border-radius: 4px;
-  background-color: ${COLOR.white};
-`
+const tableHeaders: ({ key: keyof IPlayer, text: string })[] = [
+  { key: 'playerName', text: 'Name' },
+  { key: 'rating', text: 'Rating' },
+  { key: 'loans', text: '# of Loan' },
+  { key: 'rarityName', text: 'Rarity' },
+  { key: 'team', text: 'Team' },
+  { key: 'league', text: 'League' },
+  { key: 'nationality', text: 'Nationality' },
+
+]
 
 export const PlayerTable = (props: Props) => {
-  console.log(props)
+  const { searchFilter } = props
+  const { toggleOrderBy } = searchFilter
+
+  const handleOnClick = (key: keyof IPlayer) => {
+    toggleOrderBy(key)
+
+    props.setOrderClicked(!props.orderClicked)
+  }
 
   return (
-    <Table>
+    <StyledTable>
       <thead>
         <tr>
-          <th>id</th>
-          <th>name</th>
+          {/* TODO: Show arrows by order */}
+          {tableHeaders.map((header) => (
+            <th key={header.key} onClick={() => handleOnClick(header.key)}>{header.text} {searchFilter.showOrderIcon(header.key)}</th>
+          ))}
         </tr>
       </thead>
 
       <tbody>
-        {props.players.map(({ id, playerName }) => (
-          <tr key={id}>
-            <td>{id}</td>
+        {searchFilter.orderedPlayers.map(({
+          id, playerName, rating, loans, rarityName, league, team, nationality,
+        }, index) => (
+          <tr key={`${id}-${index}`}>
             <td>{playerName}</td>
+            <td>{rating}</td>
+            <td>{loans}</td>
+            <td>{rarityName}</td>
+            <td>{team.abbr3 || team.abbr10 || team.abbr15 || team.club}</td>
+            <td>{league.abbr5 || league.abbr15 || league.name}</td>
+            <td>{nationality.abbr || nationality.abbr12 || nationality.name}</td>
           </tr>
         ))}
       </tbody>
-    </Table>
+    </StyledTable>
   )
 }

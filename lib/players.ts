@@ -1,4 +1,3 @@
-import { orderBy, isNumber } from 'lodash'
 import clubFiles from './data/clubFiles'
 
 const players = require('./data/players.json')
@@ -37,8 +36,11 @@ export interface IPlayer {
   rating: number;
   loans: number | null;
   rarityName: string | null;
+  leagueId: number;
   league: ILeague;
+  teamId: number;
   team: ITeam;
+  nationId: number;
   nationality: INationality;
 }
 
@@ -106,11 +108,7 @@ const getRarityName = (rareFlag: number): string | null => {
   return local[key]
 }
 
-export const getAllPlayers = (
-  filters: {
-    isLoan?: boolean;
-  } = undefined,
-) => {
+export const getAllPlayers = () => {
   const allPlayers: IRawPlayer[] = [
     ...players.LegendsPlayers,
     ...players.Players,
@@ -133,8 +131,11 @@ export const getAllPlayers = (
         rating: item.rating,
         loans: item.loans || null,
         rarityName: rarityName || null,
+        leagueId: item.leagueId,
         league: getLeague(item.leagueId),
+        teamId: item.teamid,
         team: getTeam(item.teamid),
+        nationId: item.nation,
         nationality: getNationality(item.nation),
       }
     }
@@ -153,16 +154,14 @@ export const getAllPlayers = (
       rating: item.rating,
       loans: item.loans || null,
       rarityName: rarityName || null,
+      leagueId: item.leagueId,
       league: getLeague(item.leagueId),
+      teamId: item.teamid,
       team: getTeam(item.teamid),
+      nationId: item.nation,
       nationality: getNationality(item.nation),
     }
   })
 
-  const filtered = mapped.filter(
-    (item) => !isNumber(item.loans) && item.rating >= 80 && item.rating <= 82,
-  )
-  const sorted = orderBy(filtered, ['rating', 'playernName'], ['desc', 'asc'])
-
-  return sorted as IPlayer[]
+  return mapped
 }
