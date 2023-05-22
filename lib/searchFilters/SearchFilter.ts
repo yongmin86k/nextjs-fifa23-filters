@@ -15,7 +15,7 @@ export class SearchFilter {
     ['playerName', 'asc'],
   ])
 
-  orderPriority: (keyof IPlayer)[] = ['rating', 'playerName']
+  orderPriority = new Set(['rating', 'playerName'])
 
   setPlayerData = (playerData: IPlayer[]) => {
     this.playerData = playerData
@@ -31,13 +31,15 @@ export class SearchFilter {
     if (!current) {
       this.orderBy.set(key, 'desc')
 
-      this.orderPriority.push(key)
+      this.orderPriority.add(key)
     } else if (current === 'desc') {
       this.orderBy.set(key, 'asc')
+      this.orderPriority.delete(key)
+      this.orderPriority.add(key)
     } else {
       this.orderBy.delete(key)
 
-      this.orderPriority = this.orderPriority.filter((item) => item !== key)
+      this.orderPriority.delete(key)
     }
   }
 
@@ -89,11 +91,12 @@ export class SearchFilter {
   }
 
   get orderedPlayers(): IPlayer[] {
-    if (this.orderPriority.length > 0) {
-      const values = this.orderPriority.map((key) => this.orderBy.get(key))
+    if (this.orderPriority.size > 0) {
+      const priority = Array.from(this.orderPriority)
+      const values = priority.map((key) => this.orderBy.get(key as keyof IPlayer))
 
       // TODO: League, team, nation is an object...
-      return orderBy(this.filteredPlayers, this.orderPriority, values) as IPlayer[]
+      return orderBy(this.filteredPlayers, priority, values) as IPlayer[]
     }
 
     return this.filteredPlayers

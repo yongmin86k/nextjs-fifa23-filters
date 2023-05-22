@@ -33,6 +33,8 @@ export default function Home({
 
   const hideLoan = router.query.isLoan === 'false'
 
+  console.log('=> searchfilter.orderPriority', searchFilter.orderPriority)
+
   return (
     <Layout>
       <Head>
