@@ -41,6 +41,15 @@ export default function Home({
       </Head>
 
       <StyledBody>
+        {/* WARNINGS */}
+        <div>
+          Duplicate players: {searchFilter.duplicatePlayers.length}
+
+          {searchFilter.duplicatePlayers.map((player) => (
+            <div key={player[0].id}>{player[0].playerName} ({player.length})</div>
+          ))}
+        </div>
+
         {/* FILTERS */}
         <div style={{ display: 'flex' }}>
           <StyledButton

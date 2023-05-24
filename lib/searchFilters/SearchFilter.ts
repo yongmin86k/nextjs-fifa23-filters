@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash'
+import { groupBy, orderBy } from 'lodash'
 import { IPlayer } from '../players'
 
 export class SearchFilter {
@@ -115,6 +115,15 @@ export class SearchFilter {
       team: player.team.club,
       nationality: player.nationality.name,
     }))
+  }
+
+  // TODO: exclude loan players
+  get duplicatePlayers(): IPlayer[][] {
+    const duplicates = groupBy(this.playerData, 'assetId') as Record<string, IPlayer[]>
+
+    const filteredDuplicates = Object.values(duplicates).filter((players) => players.length > 1)
+
+    return filteredDuplicates
   }
 
   get orderedPlayers(): IPlayer[] {
