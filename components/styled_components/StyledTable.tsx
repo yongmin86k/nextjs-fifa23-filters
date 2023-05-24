@@ -13,9 +13,15 @@ export const StyledTable = styled.table`
         background-color: ${COLOR.thBackground};
         padding: 8px 16px;
         border-bottom: 1px solid ${COLOR.blue100};
+        cursor: pointer;
 
         &:first-child { border-top-left-radius: 4px; }
         &:last-child { border-top-right-radius: 4px; }
+
+        &:hover { 
+          background-color: ${COLOR.blue100}; 
+          transition: all 0.2s ease-in-out;
+        };
       }
     }
   }

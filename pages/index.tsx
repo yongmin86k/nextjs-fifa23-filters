@@ -5,11 +5,12 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Layout, { siteTitle } from '../components/layout'
 import { IPlayer, getAllPlayers } from '../lib/players'
-import { CheckBox } from '../components/CheckBox'
-import { Button } from '../components/Button'
+import { StyledCheckBox } from '../components/styled_components/StyledCheckBox'
+import { StyledButton } from '../components/styled_components/StyledButton'
 import { PlayerTable } from '../components/PlayerTable'
 import { SearchFilter } from '../lib/searchFilters/SearchFilter'
 import { replaceWithQueryBuilder } from '../lib/helpers/queryBuilder'
+import { StyledNumberInput } from '../components/styled_components/StyledNumberInput'
 
 const StyledBody = styled.section`
 	display: flex;
@@ -33,8 +34,6 @@ export default function Home({
 
   const hideLoan = router.query.isLoan === 'false'
 
-  console.log('=> searchfilter.orderPriority', searchFilter.orderPriority)
-
   return (
     <Layout>
       <Head>
@@ -44,33 +43,64 @@ export default function Home({
       <StyledBody>
         {/* FILTERS */}
         <div style={{ display: 'flex' }}>
-          <Button size='small' onClick={() => {
-            replaceWithQueryBuilder(router, {
-              query: 'isLoan',
-              value: hideLoan ? undefined : false,
-            })
+          <StyledButton
+            componentSize='small'
+            onClick={() => {
+              replaceWithQueryBuilder(router, {
+                query: 'isLoan',
+                value: hideLoan ? undefined : false,
+              })
 
-            searchFilter.toggleLoan(!hideLoan)
-          }}>
-            <CheckBox checked={!hideLoan} />
+              searchFilter.toggleLoan(!hideLoan)
+            }}>
+            <StyledCheckBox checked={!hideLoan} />
 
             <span style={{ marginLeft: 12 }}>Loan</span>
-          </Button>
+          </StyledButton>
 
-          <input
-            type='number'
-            min={0}
-            max={99}
+          <StyledNumberInput
+            componentSize='small'
+            label='Min'
+            min={10}
+            max={98}
             style={{ marginLeft: 12 }}
-            onChange={(e) => replaceWithQueryBuilder(router, {
-              query: 'min',
-              value: e.target.value ? Number(e.target.value) : undefined,
-            })}
+            onChange={(e) => {
+              const value = e.target.value ? Number(e.target.value) : undefined
+
+              replaceWithQueryBuilder(router, {
+                query: 'min',
+                value,
+              })
+
+              searchFilter.setMin(value)
+            }}
           />
 
-          <Button size='small' style={{ marginLeft: 12 }} onClick={() => router.reload()}>
+          <StyledNumberInput
+            componentSize='small'
+            label='Max'
+            min={10}
+            max={99}
+            style={{ marginLeft: 12 }}
+            onChange={(e) => {
+              const value = e.target.value ? Number(e.target.value) : undefined
+
+              replaceWithQueryBuilder(router, {
+                query: 'max',
+                value,
+              })
+
+              searchFilter.setMax(value)
+            }}
+          />
+
+          <StyledButton
+            componentSize='small'
+            style={{ marginLeft: 12 }}
+            onClick={() => router.reload()}
+          >
             Click to reload
-          </Button>
+          </StyledButton>
         </div>
 
         {/* TABLE */}

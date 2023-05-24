@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import COLOR from '../lib/colors'
+import COLOR from '../../lib/colors'
 
-export const Button = styled.button.attrs(
-  (props: { size: 'small' | 'normal' | 'large' }) => ({
-    size: props.size || 'normal',
+export const StyledButton = styled.button.attrs(
+  (props: { componentSize: 'small' | 'normal' | 'large' }) => ({
+    componentSize: props.componentSize || 'normal',
   }),
 )`
 display: flex;
@@ -13,14 +13,14 @@ border-radius: 4px;
 border: 1px solid ${COLOR.border};
 background-color: ${COLOR.white};
 cursor: pointer;
-transition: border-color 0.2s ease-in-out;
 font-size: ${(props) => (
-    props.size === 'small'
+    props.componentSize === 'small'
       ? '12px'
-      : props.size === 'normal'
+      : props.componentSize === 'normal'
         ? '16px'
         : '24px'
   )};
+transition: all 0.2s ease-in-out;
 
 &:hover {
   border-color: ${COLOR.black};

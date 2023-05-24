@@ -4,6 +4,8 @@ import { IPlayer } from '../players'
 export class SearchFilter {
   private playerData: IPlayer[] = []
 
+  private mappedPlayerData: Map<number, IPlayer> = new Map()
+
   hideLoan?: boolean
 
   min?: number
@@ -17,12 +19,28 @@ export class SearchFilter {
 
   orderPriority = new Set(['rating', 'playerName'])
 
+  private mapPlayerData = (playerData: IPlayer[]) => {
+    playerData.forEach((player) => {
+      this.mappedPlayerData.set(player.id, player)
+    })
+  }
+
   setPlayerData = (playerData: IPlayer[]) => {
     this.playerData = playerData
+
+    this.mapPlayerData(playerData)
   }
 
   toggleLoan = (hideLoan: boolean) => {
     this.hideLoan = hideLoan
+  }
+
+  setMin = (min?: number) => {
+    this.min = min
+  }
+
+  setMax = (max?: number) => {
+    this.max = max
   }
 
   toggleOrderBy = (key: keyof IPlayer) => {
@@ -65,7 +83,7 @@ export class SearchFilter {
   }
 
   private filterMin = (data: IPlayer[]) => {
-    if (this.min) {
+    if (this.min > 10) {
       return data.filter((player) => player.rating >= this.min)
     }
 
@@ -73,7 +91,7 @@ export class SearchFilter {
   }
 
   private filterMax = (data: IPlayer[]) => {
-    if (this.max) {
+    if (this.max > 10) {
       return data.filter((player) => player.rating <= this.max)
     }
 
@@ -90,13 +108,23 @@ export class SearchFilter {
     return filters.reduce((acc, fn) => fn(acc), this.playerData)
   }
 
+  private get flattenedPlayerData() {
+    return this.filteredPlayers.map((player) => ({
+      ...player,
+      league: player.league.name,
+      team: player.team.club,
+      nationality: player.nationality.name,
+    }))
+  }
+
   get orderedPlayers(): IPlayer[] {
     if (this.orderPriority.size > 0) {
       const priority = Array.from(this.orderPriority)
       const values = priority.map((key) => this.orderBy.get(key as keyof IPlayer))
 
-      // TODO: League, team, nation is an object...
-      return orderBy(this.filteredPlayers, priority, values) as IPlayer[]
+      const newPlayerData = orderBy(this.flattenedPlayerData, priority, values) as IPlayer[]
+
+      return newPlayerData.map((player) => (this.mappedPlayerData.get(player.id)))
     }
 
     return this.filteredPlayers

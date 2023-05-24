@@ -32,6 +32,7 @@ interface INationality {
 
 export interface IPlayer {
   id: number;
+  assetId: number;
   playerName: string;
   rating: number;
   loans: number | null;
@@ -126,7 +127,8 @@ export const getAllPlayers = () => {
 
     if (!playerData) {
       return {
-        id: item.assetId,
+        id: item.id,
+        assetId: item.assetId,
         playerName: 'UNKNOWN',
         rating: item.rating,
         loans: item.loans || null,
@@ -149,7 +151,8 @@ export const getAllPlayers = () => {
     }
 
     return {
-      id: item.assetId,
+      id: item.id,
+      assetId: item.assetId,
       playerName,
       rating: item.rating,
       loans: item.loans || null,

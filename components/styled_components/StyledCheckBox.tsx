@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import COLOR from '../lib/colors'
-import { Button } from './Button'
+import COLOR from '../../lib/colors'
+import { StyledButton } from './StyledButton'
 
 interface Props {
   checked?: boolean;
@@ -10,8 +10,9 @@ const Icon = styled.svg`
   width: 24px;
   height: 24px;
   fill: ${COLOR.black};
+  transition: all 0.2s ease-in-out;
 
-  ${Button}:hover & {
+  ${StyledButton}:hover & {
     fill: ${COLOR.white};
   }
 `
@@ -28,4 +29,4 @@ const CheckBoxFilled = () => (
   </Icon>
 )
 
-export const CheckBox = ({ checked }: Props = { checked: false }) => (checked ? <CheckBoxFilled /> : <CheckBoxEmpty />)
+export const StyledCheckBox = ({ checked }: Props = { checked: false }) => (checked ? <CheckBoxFilled /> : <CheckBoxEmpty />)
