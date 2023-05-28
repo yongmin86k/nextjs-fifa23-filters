@@ -11,6 +11,7 @@ import { PlayerTable } from '../components/PlayerTable'
 import { SearchFilter } from '../lib/searchFilters/SearchFilter'
 import { replaceWithQueryBuilder } from '../lib/helpers/queryBuilder'
 import { StyledNumberInput } from '../components/styled_components/StyledNumberInput'
+import { StyledWarningBox } from '../components/styled_components/StyledWarningBox'
 
 const StyledBody = styled.section`
 	display: flex;
@@ -29,6 +30,7 @@ export default function Home({
   searchFilter.setPlayerData(allPlayersData)
 
   const [orderClicked, setOrderClicked] = useState(false)
+  const [expandedDuplicatePlayers, setExpandedDuplicatePlayers] = useState(false)
 
   const router = useRouter()
 
@@ -42,13 +44,17 @@ export default function Home({
 
       <StyledBody>
         {/* WARNINGS */}
-        <div>
-          Duplicate players: {searchFilter.duplicatePlayers.length}
+        <StyledWarningBox
+          expanded={expandedDuplicatePlayers}
+          title={`Duplicate players: ${searchFilter.duplicatePlayers.length}`}
+          style={{ marginBottom: 16 }}
+          onClick={() => setExpandedDuplicatePlayers(!expandedDuplicatePlayers)}
+        >
 
           {searchFilter.duplicatePlayers.map((player) => (
             <div key={player[0].id}>{player[0].playerName} ({player.length})</div>
           ))}
-        </div>
+        </StyledWarningBox>
 
         {/* FILTERS */}
         <div style={{ display: 'flex' }}>
@@ -119,7 +125,7 @@ export default function Home({
           setOrderClicked={setOrderClicked}
         />
       </StyledBody>
-    </Layout>
+    </Layout >
   )
 }
 

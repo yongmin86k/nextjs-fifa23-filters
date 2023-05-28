@@ -34,7 +34,6 @@ export const PlayerTable = (props: Props) => {
     <StyledTable>
       <thead>
         <tr>
-          {/* TODO: Show arrows by order */}
           {tableHeaders.map((header) => (
             <th key={header.key} onClick={() => handleOnClick(header.key)}>{header.text} {searchFilter.showOrderIcon(header.key)}</th>
           ))}

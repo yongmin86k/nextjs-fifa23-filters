@@ -117,9 +117,9 @@ export class SearchFilter {
     }))
   }
 
-  // TODO: exclude loan players
   get duplicatePlayers(): IPlayer[][] {
-    const duplicates = groupBy(this.playerData, 'assetId') as Record<string, IPlayer[]>
+    const notLoanPlayers = this.playerData.filter((player) => !player.loans)
+    const duplicates = groupBy(notLoanPlayers, 'assetId') as Record<string, IPlayer[]>
 
     const filteredDuplicates = Object.values(duplicates).filter((players) => players.length > 1)
 
