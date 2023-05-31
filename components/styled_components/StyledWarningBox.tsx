@@ -31,6 +31,12 @@ const WarningBox = styled.div.attrs(
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 
+    &:hover {
+      background-color: ${COLOR.yellow100};
+
+      svg:last-child { fill: ${COLOR.black}; }
+    }
+
     .styled-warning-box-title {
       display: flex;
       align-items: center;
@@ -49,10 +55,9 @@ const WarningBox = styled.div.attrs(
       }
     }
 
-    &:hover {
-      background-color: ${COLOR.yellow100};
-
-      svg:last-child { fill: ${COLOR.black}; }
+    .styled-warning-box-list {
+      transition: all 0.2s ease-in-out;
+      max-height: ${expanded ? '100%' : '0px'};
     }
   `)}
 `
@@ -74,7 +79,9 @@ export const StyledWarningBox = (props: PropsWithChildren<Props>) => {
         {IconExpand}
       </div>
 
-      {expanded && children}
+      <div className='styled-warning-box-list'>
+        {expanded && children}
+      </div>
     </WarningBox>
   )
 }

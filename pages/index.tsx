@@ -12,6 +12,7 @@ import { SearchFilter } from '../lib/searchFilters/SearchFilter'
 import { replaceWithQueryBuilder } from '../lib/helpers/queryBuilder'
 import { StyledNumberInput } from '../components/styled_components/StyledNumberInput'
 import { StyledWarningBox } from '../components/styled_components/StyledWarningBox'
+import { DuplicatePlayerList } from '../components/DuplicatePlyaerList'
 
 const StyledBody = styled.section`
 	display: flex;
@@ -52,7 +53,7 @@ export default function Home({
         >
 
           {searchFilter.duplicatePlayers.map((player) => (
-            <div key={player[0].id}>{player[0].playerName} ({player.length})</div>
+            <DuplicatePlayerList key={player[0].id} player={player} />
           ))}
         </StyledWarningBox>
 
