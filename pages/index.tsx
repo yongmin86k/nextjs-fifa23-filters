@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
 import Layout, { siteTitle } from '../components/layout'
 import { IPlayer, getAllPlayers } from '../lib/players'
 import { StyledCheckBox } from '../components/styled_components/StyledCheckBox'
@@ -13,13 +12,7 @@ import { replaceWithQueryBuilder } from '../lib/helpers/queryBuilder'
 import { StyledNumberInput } from '../components/styled_components/StyledNumberInput'
 import { StyledWarningBox } from '../components/styled_components/StyledWarningBox'
 import { DuplicatePlayerList } from '../components/DuplicatePlyaerList'
-
-const StyledBody = styled.section`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 4em 6em;
-`
+import { StyledBody } from '../components/styled_components/StyledBody'
 
 const searchFilter = new SearchFilter()
 
@@ -45,17 +38,22 @@ export default function Home({
 
       <StyledBody>
         {/* WARNINGS */}
-        <StyledWarningBox
-          expanded={expandedDuplicatePlayers}
-          title={`Duplicate players: ${searchFilter.duplicatePlayers.length}`}
-          style={{ marginBottom: 16 }}
-          onClick={() => setExpandedDuplicatePlayers(!expandedDuplicatePlayers)}
-        >
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+          <StyledWarningBox
+            expanded={expandedDuplicatePlayers}
+            title={`Duplicate players: ${searchFilter.duplicatePlayers.length}`}
+            onClick={() => setExpandedDuplicatePlayers(!expandedDuplicatePlayers)}
+          >
 
-          {searchFilter.duplicatePlayers.map((player) => (
-            <DuplicatePlayerList key={player[0].id} player={player} />
-          ))}
-        </StyledWarningBox>
+            {searchFilter.duplicatePlayers.map((player) => (
+              <DuplicatePlayerList key={player[0].id} player={player} />
+            ))}
+          </StyledWarningBox>
+
+          <div style={{ marginLeft: 24 }}>
+            Total: {searchFilter.orderedPlayers.length}
+          </div>
+        </div>
 
         {/* FILTERS */}
         <div style={{ display: 'flex' }}>
@@ -109,14 +107,6 @@ export default function Home({
               searchFilter.setMax(value)
             }}
           />
-
-          <StyledButton
-            componentSize='small'
-            style={{ marginLeft: 12 }}
-            onClick={() => router.reload()}
-          >
-            Click to reload
-          </StyledButton>
         </div>
 
         {/* TABLE */}

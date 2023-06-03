@@ -141,4 +141,29 @@ export class SearchFilter {
 
     return this.filteredPlayers
   }
+
+  private get groupByLeague() {
+    const groupedByleagueId = groupBy(this.playerData, 'leagueId') as Record<number, IPlayer[]>
+
+    const leagues = Object.entries(groupedByleagueId).map(([leagueId, players]) => ({
+      league: {
+        id: leagueId,
+        name: players[0].league.name,
+        abbr5: players[0].league.abbr5,
+        abbr15: players[0].league.abbr15,
+      },
+      players,
+    }))
+
+    return leagues
+  }
+
+  get orderedGroupByLeague() {
+    const ordered = orderBy(this.groupByLeague, 'league.abbr5', 'asc')
+
+    return ordered as {
+      league: IPlayer['league'] & { id: string },
+      players: IPlayer[]
+    }[]
+  }
 }

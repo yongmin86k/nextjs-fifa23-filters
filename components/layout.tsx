@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import StyledComponentsRegistry from '../lib/common/registry'
+import { StyledMenu } from './styled_components/StyledMenu'
 
 export const siteTitle = 'Testing Fifa23 filters'
 
@@ -21,7 +22,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </Head>
 
       <main>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <StyledMenu />
+
+          {children}
+        </StyledComponentsRegistry>
       </main>
     </div>
   )
